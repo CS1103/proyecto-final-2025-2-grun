@@ -15,6 +15,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # Crear biblioteca con las clases del optimizador de cartera
 add_library(portfolio_optimizer STATIC
     src/utec/apps/portfolio_optimizer.cpp
+    src/utec/apps/data_loader.cpp
 )
 
 target_include_directories(portfolio_optimizer PUBLIC

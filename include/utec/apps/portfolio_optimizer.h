@@ -67,7 +67,6 @@ public:
     
     // Configuración del ambiente
     void add_asset(const MarketData& asset_data);
-    void set_time_period(size_t start_time, size_t end_time);
     
     // Operaciones del ambiente
     PortfolioState reset();                           // Reiniciar simulación
