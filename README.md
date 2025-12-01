@@ -1,10 +1,10 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/o8XztwuW)
-# Proyecto Final 2025-1: AI Neural Network
+# Proyecto Final 2025-1: Predictor de Acciones con IA
 ## **CS2013 Programación III** · Informe Final
 
 ### **Descripción**
 
-> Ejemplo: Implementación de una red neuronal multicapa en C++ para clasificación de dígitos manuscritos.
+> Implementación de un algoritmo de predicción binaria usando redes neuronales en C++ para determinar si una acción subirá o bajará basándose en datos históricos y análisis técnico.
 
 ### Contenidos
 

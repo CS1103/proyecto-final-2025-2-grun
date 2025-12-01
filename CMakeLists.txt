@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-project(PortfolioOptimizer VERSION 1.0.0 LANGUAGES CXX)
+project(StockPredictor VERSION 1.0.0 LANGUAGES CXX)
 
 # Configuración del estándar C++
 set(CMAKE_CXX_STANDARD 17)
@@ -12,23 +12,37 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 # Incluir directorios
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Crear biblioteca con las clases del optimizador de cartera
-add_library(portfolio_optimizer STATIC
-    src/utec/apps/portfolio_optimizer.cpp
+# Crear biblioteca con las clases del predictor de acciones
+add_library(stock_predictor_lib STATIC
+    src/utec/apps/stock_predictor.cpp
     src/utec/apps/data_loader.cpp
+    src/utec/apps/portfolio_optimizer.cpp
 )
 
-target_include_directories(portfolio_optimizer PUBLIC
+target_include_directories(stock_predictor_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/include
 )
 
-# Crear ejecutable para el ejemplo
+# Crear ejecutable principal para predicción de acciones
+add_executable(stock_predictor
+    src/utec/apps/stock_predictor_main.cpp
+)
+
+target_link_libraries(stock_predictor
+    stock_predictor_lib
+)
+
+target_include_directories(stock_predictor PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+# Mantener ejecutable original para referencia
 add_executable(portfolio_example
     src/utec/apps/portfolio_example.cpp
 )
 
 target_link_libraries(portfolio_example
-    portfolio_optimizer
+    stock_predictor_lib
 )
 
 target_include_directories(portfolio_example PRIVATE
@@ -37,7 +51,8 @@ target_include_directories(portfolio_example PRIVATE
 
 # Configuración de compilación específica
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(portfolio_optimizer PRIVATE DEBUG_MODE)
+    target_compile_definitions(stock_predictor_lib PRIVATE DEBUG_MODE)
+    target_compile_definitions(stock_predictor PRIVATE DEBUG_MODE)
     target_compile_definitions(portfolio_example PRIVATE DEBUG_MODE)
 endif()
 
@@ -55,6 +70,6 @@ message(STATUS "Source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "Binary directory: ${CMAKE_BINARY_DIR}")
 
 # Opcional: instalar ejecutables
-install(TARGETS portfolio_example
+install(TARGETS stock_predictor portfolio_example
     RUNTIME DESTINATION bin
 )
