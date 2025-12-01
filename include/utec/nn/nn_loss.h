@@ -98,6 +98,13 @@ namespace utec::neural_network {
     }
   };
 
+  // Alias para facilitar el uso
+  template<typename T>
+  using MSE = MSELoss<T>;
+  
+  template<typename T>
+  using BCE = BCELoss<T>;
+
 } // namespace utec::neural_network
 
 #endif // UTEC_NEURAL_NETWORK_LOSS_H
