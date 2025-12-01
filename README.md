@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/o8XztwuW)
-# Proyecto Final 2025-1: Predictor de Acciones con IA
+# Proyecto Final 2025-1: Predictor de Subida o Bajada de Acciones
 ## **CS2013 Programación III** · Informe Final
 
 ### **Descripción**
@@ -26,7 +26,7 @@
 * **Grupo**: `grun`
 * **Integrantes**:
 
-  * Cristhian Jaimes Gamboa - 202120670 (Responsable de todo)
+  * Cristhian Jaimes Gamboa - 202120670
 
 ---
 
@@ -124,16 +124,9 @@
 
 ### 5. Trabajo en equipo
 
-| Tarea                     | Miembro  | Rol                       |
-| ------------------------- | -------- | ------------------------- |
-| Investigación teórica     | Alumno A | Documentar bases teóricas |
-| Diseño de la arquitectura | Alumno B | UML y esquemas de clases  |
-| Implementación del modelo | Alumno C | Código C++ de la NN       |
-| Pruebas y benchmarking    | Alumno D | Generación de métricas    |
-| Documentación y demo      | Alumno E | Tutorial y video demo     |
-
-> *Actualizar con tareas y nombres reales.*
-
+| Tarea   | Miembro     | Rol                       |
+| --------| --------    | ------------------------- |
+| Todo    | Cristhian J. | Todo |
 ---
 
 ### 6. Conclusiones

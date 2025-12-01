@@ -163,14 +163,14 @@ public:
         
         // Entrenar modelo
         using namespace utec::neural_network;
-        size_t epochs = 100;
+        size_t epochs = 200;
         size_t batch_size = 32;
-        double learning_rate = 0.01;
+        double learning_rate = 0.001;
         
         std::cout << "Épocas: " << epochs << ", Batch size: " << batch_size 
                   << ", Learning rate: " << learning_rate << std::endl;
         
-        predictor_->get_model()->template train<BCE, SGD>(X, Y, epochs, batch_size, learning_rate);
+        predictor_->get_model()->template train<BCE, Adam>(X, Y, epochs, batch_size, learning_rate);
         
         // Marcar modelo como entrenado
         predictor_->set_trained(true);
