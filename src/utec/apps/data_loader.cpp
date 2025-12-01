@@ -146,4 +146,78 @@ bool DataLoader::is_valid_price(double price) {
     return price > 0 && std::isfinite(price); // Solo verificar que sea positivo y válido
 }
 
+std::vector<MarketData> DataLoader::load_features_csv(const std::string& filename) {
+    std::map<std::string, MarketData> data_by_symbol;
+    
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("No se pudo abrir el archivo: " + filename);
+    }
+    
+    std::string line;
+    bool is_header = true;
+    
+    while (std::getline(file, line)) {
+        if (is_header) {
+            is_header = false;
+            continue; // Saltar encabezado
+        }
+        
+        auto fields = split_csv_line(line);
+        if (fields.size() >= 14) {
+            try {
+                // Formato: Date,Symbol,Close,price_change_1d,price_change_3d,price_change_5d,
+                //          sma_5,sma_10,sma_20,rsi,volume_ratio,volatility,momentum,target
+                std::string date = fields[0];
+                std::string symbol = fields[1];
+                double close = parse_double(fields[2]);
+                double price_change_1d = parse_double(fields[3]);
+                double price_change_3d = parse_double(fields[4]);
+                double price_change_5d = parse_double(fields[5]);
+                double sma_5 = parse_double(fields[6]);
+                double sma_10 = parse_double(fields[7]);
+                double sma_20 = parse_double(fields[8]);
+                double rsi = parse_double(fields[9]);
+                double volume_ratio = parse_double(fields[10]);
+                double volatility = parse_double(fields[11]);
+                double momentum = parse_double(fields[12]);
+                int target = std::stoi(fields[13]);
+                
+                // Crear entrada si no existe
+                if (data_by_symbol.find(symbol) == data_by_symbol.end()) {
+                    data_by_symbol[symbol].symbol = symbol;
+                }
+                
+                auto& data = data_by_symbol[symbol];
+                data.dates.push_back(date);
+                data.prices.push_back(close);
+                data.price_change_1d.push_back(price_change_1d);
+                data.price_change_3d.push_back(price_change_3d);
+                data.price_change_5d.push_back(price_change_5d);
+                data.sma_5.push_back(sma_5);
+                data.sma_10.push_back(sma_10);
+                data.sma_20.push_back(sma_20);
+                data.rsi.push_back(rsi);
+                data.volume_ratio.push_back(volume_ratio);
+                data.volatility.push_back(volatility);
+                data.momentum.push_back(momentum);
+                data.target.push_back(target);
+                
+            } catch (const std::exception& e) {
+                std::cerr << "Error procesando línea: " << line << " - " << e.what() << std::endl;
+            }
+        }
+    }
+    
+    // Convertir mapa a vector
+    std::vector<MarketData> result;
+    for (auto& pair : data_by_symbol) {
+        std::cout << "Cargados " << pair.second.prices.size() 
+                  << " datos para " << pair.first << std::endl;
+        result.push_back(std::move(pair.second));
+    }
+    
+    return result;
+}
+
 } // namespace utec::apps
