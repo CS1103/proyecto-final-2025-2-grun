@@ -16,44 +16,29 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_library(stock_predictor_lib STATIC
     src/utec/apps/stock_predictor.cpp
     src/utec/apps/data_loader.cpp
-    src/utec/apps/portfolio_optimizer.cpp
 )
 
 target_include_directories(stock_predictor_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/include
 )
 
-# Crear ejecutable principal para predicción de acciones
-add_executable(stock_predictor
-    src/utec/apps/stock_predictor_main.cpp
+# Ejecutable para validar el modelo
+add_executable(model_validator
+    src/utec/apps/model_validator.cpp
 )
 
-target_link_libraries(stock_predictor
+target_link_libraries(model_validator
     stock_predictor_lib
 )
 
-target_include_directories(stock_predictor PRIVATE
-    ${CMAKE_SOURCE_DIR}/include
-)
-
-# Mantener ejecutable original para referencia
-add_executable(portfolio_example
-    src/utec/apps/portfolio_example.cpp
-)
-
-target_link_libraries(portfolio_example
-    stock_predictor_lib
-)
-
-target_include_directories(portfolio_example PRIVATE
+target_include_directories(model_validator PRIVATE
     ${CMAKE_SOURCE_DIR}/include
 )
 
 # Configuración de compilación específica
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(stock_predictor_lib PRIVATE DEBUG_MODE)
-    target_compile_definitions(stock_predictor PRIVATE DEBUG_MODE)
-    target_compile_definitions(portfolio_example PRIVATE DEBUG_MODE)
+    target_compile_definitions(model_validator PRIVATE DEBUG_MODE)
 endif()
 
 # Opcional: agregar tests si existen
@@ -70,6 +55,6 @@ message(STATUS "Source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "Binary directory: ${CMAKE_BINARY_DIR}")
 
 # Opcional: instalar ejecutables
-install(TARGETS stock_predictor portfolio_example
+install(TARGETS model_validator
     RUNTIME DESTINATION bin
 )

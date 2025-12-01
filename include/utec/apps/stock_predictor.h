@@ -80,6 +80,17 @@ public:
     // Guardar y cargar modelo (simplificado)
     void save_model(const std::string& filename);
     void load_model(const std::string& filename);
+    
+    // Acceso al modelo (para uso en validación/entrenamiento externo)
+    utec::neural_network::NeuralNetwork<double>* get_model() { return model_.get(); }
+    
+    // Marcar modelo como entrenado (para validación externa)
+    void set_trained(bool trained) { is_trained_ = trained; }
+    
+    // Hacer públicos los métodos de normalización y conversión para el validador
+    void normalize_features(std::vector<TechnicalFeatures>& features);
+    utec::algebra::Tensor<double, 2> features_to_tensor(const std::vector<TechnicalFeatures>& features);
+    utec::algebra::Tensor<double, 2> labels_to_tensor(const std::vector<int>& labels);
 
 private:
     // Funciones auxiliares para cálculos técnicos
@@ -89,13 +100,8 @@ private:
     double calculate_momentum(const std::vector<double>& prices, size_t period, size_t end_idx);
     double calculate_volume_ratio(const std::vector<double>& volumes, size_t period, size_t end_idx);
     
-    // Normalizar características
-    void normalize_features(std::vector<TechnicalFeatures>& features);
+    // Normalización de características individuales
     TechnicalFeatures normalize_single_feature(const TechnicalFeatures& features);
-    
-    // Conversión entre formatos de datos
-    utec::algebra::Tensor<double, 2> features_to_tensor(const std::vector<TechnicalFeatures>& features);
-    utec::algebra::Tensor<double, 2> labels_to_tensor(const std::vector<int>& labels);
 };
 
 } // namespace utec::apps
