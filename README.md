@@ -22,7 +22,7 @@
 
 ### Datos generales
 
-* **Tema**: Redes Neuronales en AI
+* **Tema**: Uso de redes neuronales para predecir el movimiento de acciones en la bolsa.
 * **Grupo**: `grun`
 * **Integrantes**:
 
@@ -54,12 +54,19 @@
 
 ### 1. Investigación teórica
 
-* **Objetivo**: Explorar fundamentos y arquitecturas de redes neuronales.
-* **Contenido de ejemplo**:
+  **Evolución de las redes neuronales**
 
-  1. Historia y evolución de las NNs.
-  2. Principales arquitecturas: MLP, CNN, RNN.
-  3. Algoritmos de entrenamiento: backpropagation, optimizadores.
+  El desarrollo de las redes neuronales se originó con los primeros estudios dedicados a descifrar el funcionamiento del sistema nervioso. Esta inspiración biológica permitió la creación de sistemas artificiales, conocidos hoy como Redes Neuronales Artificiales (RNA), las cuales han alcanzado un grado de sofisticación que les permite abordar y solucionar eficientemente problemas prácticos y reales. [1]
+  1. Optimización Inicial y Computación Evolutiva
+  El campo experimentó un avance significativo en sus etapas iniciales, especialmente desde finales de la década de 1980, con la introducción de la computación evolutiva. Este enfoque permitió la optimización de elementos cruciales de las redes, como sus arquitecturas, los pesos de conexión y las reglas de aprendizaje. La capacidad de utilizar métodos de búsqueda metaheurística facilitó que las RNA superaran las limitaciones de los diseños sencillos y comenzaran a abordar problemas de mayor complejidad. [2], [3]
+
+  2. La Revolución del Deep Learning
+  El hito más transformador fue el auge del Deep Learning. Las Redes Neuronales Profundas (DNNs) lograron un éxito sin precedentes en áreas como el reconocimiento de patrones y el aprendizaje automático, en gran medida impulsadas por el perfeccionamiento de algoritmos de entrenamiento como la retropropagación (backpropagation). Este avance metodológico permitió entrenar eficazmente redes con múltiples capas ocultas, desbloqueando capacidades que definen el panorama de la Inteligencia Artificial moderna. [4]
+
+  3. Automatización del Diseño (Neuroevolución)
+  La tendencia evolutiva más reciente se centra en la Neuroevolución (el uso de algoritmos evolutivos para el diseño de RNA) [5], [6]. Esta metodología ha ganado importancia al proporcionar un mecanismo eficiente para la Búsqueda Automatizada de Arquitecturas Neuronales (NAS) [7], [8]. La neuroevolución ofrece una alternativa poderosa a los métodos tradicionales basados en gradientes, permitiendo la exploración de arquitecturas, hiperparámetros y algoritmos de aprendizaje de manera paralela y a gran escala, lo que impulsa la eficiencia y el diseño de sistemas de Deep Learning de última generación.
+
+**Algoritmos de entrenamiento: backpropagation, optimizadores.**
 
 ---
 
@@ -140,8 +147,14 @@
 
 ### 7. Bibliografía
 
-> *Actualizar con bibliografia utilizada, al menos 4 referencias bibliograficas y usando formato IEEE de referencias bibliograficas.*
-
+- [1] A. Prieto, B. Prieto, E. Ortigosa, E. Ros, F. Pelayo, J. Ortega, and I. Rojas, "Neural networks: An overview of early research, current frameworks and new challenges," Neurocomputing, vol. 214, pp. 242–268, 2016. DOI: 10.1016/j.neucom.2016.06.014.
+- [2] H. Ünal and F. Başçiftçi, "Evolutionary design of neural network architectures: a review of three decades of research," Artificial Intelligence Review, vol. 55, pp. 1723–1802, 2021. DOI: 10.1007/s10462-021-10049-5.
+- [3] X. Yao, "Evolutionary Artificial Neural Networks," International Journal of Neural Systems, vol. 4, no. 3, pp. 203–222, 1993. DOI: 10.1142/s0129065793000171.
+- [4] J. Schmidhuber, "Deep learning in neural networks: An overview," Neural Netw.: Off. J. Int. Neural Netw. Soc., vol. 61, pp. 85–117, 2014. DOI: 10.1016/j.neunet.2014.09.003.
+- [5] A. Baldominos, Y. Sáez, and P. Isasi, "On the automated, evolutionary design of neural networks: past, present, and future," Neural Comput. Appl., vol. 32, pp. 519–545, 2019. DOI: 10.1007/s00521-019-04160-6.
+- [6] K. Stanley, J. Clune, J. Lehman, and R. Miikkulainen, "Designing neural networks through neuroevolution," Nat. Mach. Intell., vol. 1, pp. 24–35, 2019. DOI: 10.1038/s42256-018-0006-z.
+- [7] Y. Ma and Y. Xie, "Evolutionary neural networks for deep learning: a review," Int. J. Mach. Learn. Cybern., vol. 13, pp. 3001–3018, 2022. DOI: 10.1007/s13042-022-01578-8.
+- [8] X. Zhou, A. Qin, M. Gong, and K. Tan, "A Survey on Evolutionary Construction of Deep Neural Networks," IEEE Trans. Evol. Comput., vol. 25, pp. 894–912, 2021. DOI: 10.1109/tevc.2021.3079985.
 ---
 
 ### Licencia
