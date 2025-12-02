@@ -86,18 +86,92 @@ Las innovaciones recientes buscan mejorar aún más las propiedades de convergen
 
 #### 2.1 Arquitectura de la solución
 
-* **Patrones de diseño**: ejemplo: Factory para capas, Strategy para optimizadores.
-* **Estructura de carpetas (ejemplo)**:
+##### Patrones de diseño implementados
 
-  ```
-  proyecto-final/
-  ├── src/
-  │   ├── layers/
-  │   ├── optimizers/
-  │   └── main.cpp
-  ├── tests/
-  └── docs/
-  ```
+1. **Strategy Pattern (Patrón Estrategia)**:
+   - **Optimizadores**: La interfaz `IOptimizer<T>` permite intercambiar algoritmos de optimización (SGD, Adam) sin modificar el código de las capas o la red neuronal.
+   - **Funciones de pérdida**: La interfaz `ILoss<T, DIMS>` permite cambiar entre diferentes funciones de pérdida (MSELoss, BCELoss) de manera transparente.
+   - **Capas de activación**: La interfaz `ILayer<T>` unifica el comportamiento de diferentes capas (Dense, ReLU, Sigmoid, Softmax), permitiendo que la red neuronal las trate de forma polimórfica.
+
+2. **Template Method Pattern (Patrón Método Plantilla)**:
+   - La clase `NeuralNetwork` define el flujo de entrenamiento (`train`) que siempre sigue los mismos pasos (forward → loss → backward → update), pero delega la implementación específica a las capas individuales.
+
+3. **Composite Pattern (Patrón Compuesto)**:
+   - `NeuralNetwork` actúa como contenedor de capas (`ILayer`), permitiendo construir arquitecturas complejas mediante composición de capas más simples.
+
+##### Estructura del proyecto
+
+```
+proyecto-final-2025-2-grun/
+├── include/utec/
+│   ├── algebra/
+│   │   └── tensor.h                    # Implementación de Tensor N-dimensional
+│   ├── nn/
+│   │   ├── nn_interfaces.h             # Interfaces: ILayer, IOptimizer, ILoss
+│   │   ├── nn_dense.h                  # Capa Dense (fully connected)
+│   │   ├── nn_activation.h             # Activaciones: ReLU, Sigmoid, Softmax
+│   │   ├── nn_loss.h                   # Funciones de pérdida: MSE, BCE
+│   │   ├── nn_optimizer.h              # Optimizadores: SGD, Adam
+│   │   └── neural_network.h            # Clase principal NeuralNetwork
+│   └── apps/
+│       ├── data_loader.h               # Carga de datos desde CSV
+│       └── stock_predictor.h           # Predictor de acciones
+├── src/utec/apps/
+│   ├── data_loader.cpp                 # Implementación del cargador de datos
+│   ├── stock_predictor.cpp             # Extracción de features técnicas
+│   └── model_validator.cpp             # Ejecutable de validación
+├── tests/
+│   ├── relu/test_[1-4]/                # Tests de función de activación ReLU
+│   ├── dense/test_[1-4]/               # Tests de capa Dense
+│   └── convergence/test_[1-4]/         # Tests de convergencia (XOR)
+├── data/
+│   ├── stocks/                         # Datos históricos de acciones (AAPL, GOOGL, JPM, JNJ, MSFT)
+│   └── etfs/                           # Datos históricos de ETFs (SPY, VTI, QQQ, GLD, BND)
+├── scripts/
+│   └── prepare_data_simple.py          # Script de procesamiento de datos
+├── build/                              # Directorio de compilación (generado)
+├── stock_data_training.csv             # Dataset de entrenamiento (generado)
+├── stock_data_test.csv                 # Dataset de prueba (generado)
+├── CMakeLists.txt                      # Configuración de CMake
+└── docs/
+    └── README.md                       # Este documento
+```
+
+##### Componentes principales
+
+1. **Capa de Álgebra**:
+   - `Tensor<T, DIMS>`: Contenedor genérico N-dimensional que soporta operaciones matriciales fundamentales.
+
+2. **Capa de Red Neuronal** (`include/utec/nn/`):
+   - **Interfaces**: Define contratos para capas, optimizadores y funciones de pérdida.
+   - **Dense Layer**: Implementa capa completamente conectada con inicializaciones He y Xavier.
+   - **Activaciones**: ReLU, Sigmoid y Softmax con forward y backward pass.
+   - **Funciones de pérdida**: MSE (regresión) y BCE (clasificación binaria).
+   - **Optimizadores**: SGD básico y Adam con momentos adaptativos.
+
+3. **Capa de Aplicación** (`include/utec/apps/`):
+   - **DataLoader**: Parsea archivos CSV con datos de mercado (fecha, apertura, cierre, volumen).
+   - **StockPredictor**: Extrae 10 características técnicas (SMA, RSI, volatilidad, momentum) y entrena modelo de clasificación binaria para predecir subida/bajada de acciones.
+
+4. **Scripts de Procesamiento** (`scripts/`):
+   - **prepare_data_simple.py**: Script Python independiente (sin dependencias externas) que:
+     - Carga datos históricos desde `data/stocks/` (5 acciones: AAPL, GOOGL, JPM, JNJ, MSFT)
+     - Calcula características técnicas: cambios de precio (1d, 3d, 5d), medias móviles (SMA 5, 10, 20), RSI, volatilidad, momentum, ratio de volumen
+     - Genera labels binarios (1=sube, 0=baja) según el precio del día siguiente
+     - Normaliza features usando z-score (media=0, desviación estándar=1)
+     - Aplica muestreo temporal (cada 5 días) y limita a 500 muestras por acción para reducir el dataset
+     - Divide datos en entrenamiento (80%) y prueba (20%)
+     - Genera `stock_data_training.csv` y `stock_data_test.csv`
+
+##### Características técnicas extraídas
+
+El predictor calcula las siguientes 10 features por ventana temporal:
+- `price_change_1d`, `price_change_3d`, `price_change_5d`: Cambios de precio a corto plazo
+- `sma_5`, `sma_10`, `sma_20`: Medias móviles simples
+- `rsi`: Índice de Fuerza Relativa (overbought/oversold)
+- `volume_ratio`: Ratio del volumen vs promedio histórico
+- `volatility`: Desviación estándar de retornos (10 días)
+- `momentum`: Tasa de cambio de precio (10 días)
 
 #### 2.2 Manual de uso y casos de prueba
 
