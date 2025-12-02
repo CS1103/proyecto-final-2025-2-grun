@@ -14,7 +14,30 @@ _deps/
 # Compiled binaries (project specific)
 portfolio_example
 stock_predictor
+model_validator
 libportfolio_optimizer.a
+
+# Test executables (compiled binaries without extension)
+tests/relu/test_1/test_1
+tests/relu/test_2/test_2
+tests/relu/test_3/test_3
+tests/relu/test_4/test_4
+tests/dense/test_1/test_1
+tests/dense/test_2/test_2
+tests/dense/test_3/test_3
+tests/dense/test_4/test_4
+tests/convergence/test_1/test_1
+tests/convergence/test_2/test_2
+tests/convergence/test_3/test_3
+tests/convergence/test_4/test_4
+
+# Test temporary files
+tests/**/*_temp
+tests/**/*_gen
+tests/**/*_manual
+tests/test-main.o
+
+# Object files and libraries
 *.o
 *.a
 

@@ -101,16 +101,49 @@ Las innovaciones recientes buscan mejorar aún más las propiedades de convergen
 
 #### 2.2 Manual de uso y casos de prueba
 
-* **Cómo ejecutar**: `./build/neural_net_demo input.csv output.csv`
-* **Casos de prueba**:
+* **Cómo ejecutar**: `./build/model_validator`
 
-  * Test unitario de capa densa.
-  * Test de función de activación ReLU.
-  * Test de convergencia en dataset de ejemplo.
+##### Tests Unitarios
 
-> *Personalizar rutas, comandos y casos reales.*
+El proyecto incluye 12 tests unitarios organizados en 3 categorías que validan el correcto funcionamiento de los componentes de la red neuronal:
 
----
+**Compilación de la infraestructura base:**
+```bash
+make -C tests catch-essential
+```
+
+**Ejecución de tests individuales:**
+```bash
+# Ejemplo: ejecutar test de ReLU #1
+cd tests/relu/test_1 && ./run_test
+
+# Ejemplo: ejecutar test de Dense #2
+cd tests/dense/test_2 && ./run_test
+
+# Ejemplo: ejecutar test de Convergence #1
+cd tests/convergence/test_1 && ./run_test
+```
+
+**Descripción de tests:**
+
+| Categoría | Test | Nombre | Descripción |
+|-----------|------|--------|-------------|
+| **ReLU** | 1 | ReLU Forward-Backward Simple | Valida forward pass con valores mixtos (-1,2,0,-3) y backward con gradientes |
+| **ReLU** | 2 | ReLU Diagonal Pattern | Matriz 5x4 con patrón diagonal, verifica ceros en negativos |
+| **ReLU** | 3 | Sigmoid Forward-Backward | Compara función Sigmoid con valores extremos (±100) |
+| **ReLU** | 4 | ReLU Gradient Validation | Verifica gradientes en backward pass (1 si x>0, 0 si x≤0) |
+| **Dense** | 1 | Dense Forward Identity Init | Forward con inicialización identidad, verifica Y=X |
+| **Dense** | 2 | Dense Backward Iota | Backward con datos secuenciales usando std::iota |
+| **Dense** | 3 | Dense He Initialization | Inicialización He con seed=42, verifica forward/backward |
+| **Dense** | 4 | Dense Xavier Initialization | Inicialización Xavier con seed=4, verifica forward/backward |
+| **Convergence** | 1 | XOR MSELoss ReLU | Red 2→4→1 con ReLU, MSELoss, 3000 epochs, lr=0.08, seed=42 |
+| **Convergence** | 2 | XOR BCELoss Sigmoid | Red 2→4→1 con Sigmoid, BCELoss, 4000 epochs, lr=0.08, seed=4 |
+| **Convergence** | 3 | XOR MSELoss ReLU Low LR | Red 2→4→1 con ReLU, MSELoss, 4000 epochs, lr=0.02, seed=20 |
+| **Convergence** | 4 | XOR BCELoss Sigmoid Alt Order | Red 2→4→1 con Sigmoid, BCELoss, 4000 epochs, lr=0.08, seed=4 |
+
+**Criterios de éxito:**
+- Tests de ReLU/Dense: Verifican dimensiones correctas y valores numéricos con tolerancia `epsilon(1e-12)`
+- Tests de Convergence: Verifican que la red aprenda XOR correctamente (predicciones ≥0.6 para 1, <0.5 para 0)
 
 ### 3. Ejecución
 
