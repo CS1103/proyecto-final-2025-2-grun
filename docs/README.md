@@ -232,19 +232,123 @@ cd tests/convergence/test_1 && ./run_test
 
 ### 4. Análisis del rendimiento
 
-* **Métricas de ejemplo**:
+#### 4.1 Configuración del modelo
 
-  * Iteraciones: 1000 épocas.
-  * Tiempo total de entrenamiento: 2m30s.
-  * Precisión final: 92.5%.
-* **Ventajas/Desventajas**:
+**Arquitectura de la red neuronal:**
+- **Capas**: 10 → 64 → 32 → 16 → 1
+  - Entrada: 10 features técnicas (price_change, SMA, RSI, volatilidad, momentum, volume_ratio)
+  - Capa oculta 1: 64 neuronas + activación Sigmoid
+  - Capa oculta 2: 32 neuronas + activación Sigmoid
+  - Capa oculta 3: 16 neuronas + activación Sigmoid
+  - Salida: 1 neurona (clasificación binaria) + activación Sigmoid
+  
+**Hiperparámetros de entrenamiento:**
+- **Épocas**: 200
+- **Batch size**: 32 (todo el dataset procesado en cada época)
+- **Learning rate**: 0.001
+- **Optimizador**: Adam (β₁=0.9, β₂=0.999, ε=1e-8)
+- **Función de pérdida**: Binary Cross-Entropy (BCE)
 
-  * * Código ligero y dependencias mínimas.
-  * – Sin paralelización, rendimiento limitado.
-* **Mejoras futuras**:
+**Dataset:**
+- **Total de acciones**: 5 (AAPL, GOOGL, JPM, JNJ, MSFT)
+- **Muestreo temporal**: Cada 5 días (reducción de dataset)
+- **Máximo por acción**: 500 muestras más recientes
+- **División**: 80% entrenamiento, 20% prueba
+- **Normalización**: Z-score (μ=0, σ=1) por feature
 
-  * Uso de BLAS para multiplicaciones (Justificación).
-  * Paralelizar entrenamiento por lotes (Justificación).
+#### 4.2 Métricas de rendimiento
+
+El validador (`model_validator`) calcula automáticamente las siguientes métricas:
+
+**Métricas principales:**
+- **Accuracy (Exactitud)**: Porcentaje de predicciones correctas
+  - Formula: `(TP + TN) / (TP + TN + FP + FN)`
+  - Umbral de predicción: ≥ 0.5 → sube (1), < 0.5 → baja (0)
+
+- **Precision (Precisión)**: De las predicciones de "subida", cuántas fueron correctas
+  - Formula: `TP / (TP + FP)`
+  - Indica confiabilidad en predicciones positivas
+
+- **Recall (Sensibilidad)**: De las subidas reales, cuántas fueron detectadas
+  - Formula: `TP / (TP + FN)`
+  - Indica capacidad de detectar todas las subidas
+
+- **F1-Score**: Media armónica de precision y recall
+  - Formula: `2 × (Precision × Recall) / (Precision + Recall)`
+  - Métrica balanceada para clasificación
+
+**Matriz de confusión:**
+```
+                Predicho
+                0       1
+Real    0      TN      FP
+        1      FN      TP
+```
+
+#### 4.3 Análisis de resultados
+
+**Criterios de evaluación automática:**
+- **Accuracy > 70%**: ✓ Excelente rendimiento del modelo
+- **60% < Accuracy ≤ 70%**: ⚠ Rendimiento aceptable, considerar más entrenamiento
+- **50% < Accuracy ≤ 60%**: ⚠ Rendimiento bajo, revisar hiperparámetros
+- **Accuracy ≤ 50%**: ✗ Rendimiento muy bajo, modelo necesita ajustes
+
+**Análisis de balance:**
+- **|Precision - Recall| < 0.1**: ✓ Modelo balanceado
+- **Precision > Recall**: ⚠ Modelo conservador (alta precisión, bajo recall)
+- **Recall > Precision**: ⚠ Modelo agresivo (alto recall, baja precisión)
+
+#### 4.4 Ventajas de la implementación
+
+✅ **Código puro C++**:
+- Sin dependencias externas (no requiere TensorFlow, PyTorch, NumPy)
+- Solo STL y CMake, fácil de compilar y portar
+- Implementación educativa clara de backpropagation desde cero
+
+✅ **Arquitectura extensible**:
+- Patrones de diseño (Strategy, Template Method, Composite)
+- Fácil agregar nuevas capas, optimizadores o funciones de pérdida
+- Interfaces bien definidas (`ILayer`, `IOptimizer`, `ILoss`)
+
+✅ **Validación completa**:
+- 12 tests unitarios (ReLU, Dense, Convergence)
+- Validador automático con métricas detalladas
+- Pipeline completo: datos → preprocesamiento → entrenamiento → evaluación
+
+✅ **Features financieras relevantes**:
+- 10 indicadores técnicos estándar (SMA, RSI, volatilidad)
+- Normalización estadística (z-score)
+- Estrategia de muestreo para reducir dataset
+
+#### 4.5 Limitaciones y desafíos
+
+❌ **Rendimiento computacional**:
+- Multiplicación matricial naive (O(n³)) sin optimizaciones
+- Sin uso de BLAS/LAPACK para operaciones de álgebra lineal
+- Sin paralelización (CPU single-threaded)
+- Entrenamiento lento en datasets grandes (>10K muestras)
+
+❌ **Memoria**:
+- Tensores almacenan todos los datos en memoria contigua
+- Sin lazy evaluation ni gradient checkpointing
+- Copia completa de tensores en forward/backward pass
+
+❌ **Optimización limitada**:
+- Solo Adam y SGD implementados
+- No soporta learning rate scheduling
+- Batch processing simplificado (no mini-batches paralelos)
+
+❌ **Características del mercado**:
+- Datos históricos limitados (5 acciones, hasta 2020)
+- No considera factores externos (noticias, sentimiento, macro)
+- Predicción binaria simple (sube/baja) sin magnitud
+- No maneja gaps de mercado ni eventos especiales
+
+#### 4.6 Mejoras futuras propuestas
+
+- Aumentar el número de datos para el entrenamiento, que se tuvieron que recortar para que el tiempo de ejecución del programa no fuera excesivo.
+- Paralelizar muchos de los procesos.
+- Probar distintos hiperparámetros.
 
 ---
 
