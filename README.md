@@ -32,23 +32,23 @@
 
 ### Requisitos e instalación
 
-1. **Compilador**: GCC 11 o superior
+1. **Compilador**: GCC con soporte para C++17 o superior
 2. **Dependencias**:
 
    * CMake 3.18+
-   * Eigen 3.4
-   * \[Otra librería opcional]
+   * Biblioteca estándar de C++ (STL)
 3. **Instalación**:
 
    ```bash
-   git clone https://github.com/EJEMPLO/proyecto-final.git
-   cd proyecto-final
+   git clone https://github.com/CS1103/proyecto-final-2025-2-grun.git
+   cd proyecto-final-2025-2-grun
    mkdir build && cd build
    cmake ..
    make
    ```
 
-> *Ejemplo de repositorio y comandos, ajustar según proyecto.*
+4. **Ejecutables generados**:
+   * `model_validator`: Validador del modelo de predicción de acciones
 
 ---
 
